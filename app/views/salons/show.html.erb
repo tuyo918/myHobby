@@ -1,0 +1,100 @@
+<div id="salon-show">
+  <div>
+    <%= link_to "Add Post", new_salon_post_path(@salon) , class: "btn btn-info add-post" %>
+    <h1>Salon</h1>
+    
+    <h2><%= @salon.title %></h2>
+    <div>
+      <% if @salon.icon.present? %>
+        <%= image_tag @salon.icon, class: "salons-show-icon" %>
+      <% end %>
+      <div class="heading">Detail</div>
+      <p><%= @salon.description %></p>
+      <p><%= User.find_by(id: @salon.user_id).nickname %></p>
+      <div class="heading">カテゴリー</div>
+      <p><%= Category.find_by(id: @salon.category_id).name %></p>
+      <div class="heading">検索</div>
+      <p><%= @salon.search_word %></p>
+      <div class="heading">料金</div>
+      <p><%= @salon.fee %>円</p>
+      <div class="heading">イメージ</div>
+      <% if @salon.images.present? %>
+        <div class="salon-images-area">
+          <% @salon.images.each do |image| %>
+            <%= image_tag image, class: "salons-show-image" %>
+          <% end %>
+        </div>
+      <% end %>
+  
+      <% if @salon.videos.present? %>
+        <% @salon.videos.each do |video| %>
+          <%= video_tag video, controls: true, controlsList: "nodownload", class: "salons-show-video" %>
+        <% end %>
+      <% end %>
+      <h5>Salon 説明</h5>
+      <p><%= @salon.introduction %></p>
+    </div>
+  </div>
+  <!--もしユーザーとオーナーのユーザーidが一致しなければ、サロン申請を送れる-->
+  <% if salon_join_status(@salon.id) == false %>
+    <% unless current_user.id == @salon.user_id %>
+      <div class="registor_button">
+        <%= form_for @salon_join do |f| %>
+          <%= f.hidden_field :salon_id, :value => @salon.id %>
+          <%= f.hidden_field :user_id, :value => current_user.id %>
+          <%= f.text_field :memo, class: "form-control col-6 salon-join-text", required: true, placeholder: "メッセージ必須" %>
+          <%= f.submit "参加申込", class: "btn btn-primary" %>
+        <% end %>
+      </div>
+    <% end %>
+  <% elsif salon_join_status(@salon.id) == "r" %>
+    <p>申込中....</p>
+  <% elsif salon_join_status(@salon.id) == "p" %>
+    <p>参加済</p>
+  <% end %>
+  
+  <!--もしデータベースに参加申し込みのメッセージが既に入った場合、ステータスの表示わけ-->
+  <!--<=if Salon_joins.find_by() %>-->
+  <!--  参加申し込み済み!-->
+  <!--< else %>-->
+  <!--  参加ボタンを押してください-->
+  <!--< end %>  -->
+ 
+  
+  <hr>
+     <%= form_tag("/salons/#{@salon.id}", method: "get")  do %>
+      <%= text_field_tag :search, "", {class: "form-control col-8 search-text-field", placeholder: 'title content ...'} %>
+      <%= submit_tag "Post search", class: "btn btn-success" %>
+    <% end %> 
+  
+  
+  
+  <% @posts.each do |post| %>
+    <div class="post-index-item media">
+      <% if post.images.present? %>
+        <%= image_tag post.images[0], class: "mr-3 post-index-image", :alt => post.title %>
+      <% else %>
+        <%= image_tag "/no-image.png", class: "mr-3 post-index-image", :alt => post.title %>
+      <% end %>
+      <div class="media-body">
+        <h5 class="mt-0"><%= post.title %></h5>
+        <%= post.content.slice(0..100) %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+
+
+
+<style>
+.search-text-field {
+  display: inline-block;
+}
+
+.salon-join-text {
+  display: inline-block;
+}
+
+  
+</style>

@@ -1,0 +1,38 @@
+<%= form_for @salon do |f| %>
+  <%= f.hidden_field :user_id, :value => current_user.id %>
+
+  <div>
+    <P>カテゴリー</P>
+    <%= f.collection_select(:category_id, Category.all , :id, :name)  %>
+  </div>
+
+  <div>
+    <P>サロンタイトル</P>
+    <%= f.text_field :title, class: "form-control col-4" %>
+  </div>
+  <div>
+    <p>活動内容</p>
+     <%= f.text_area :description, class: "form-control col-6" %>
+  </div>
+  <div>
+    <p>料金</p>
+     <%= f.number_field :fee, :placeholder => "1000円なら1000と入力" ,class: "form-control col-6" %>
+  </div>  
+  <div>
+    <P>アイコン</P>
+     <%= f.file_field :icon %>
+  </div>
+  <div>
+    <p>画像</p>
+    <%= f.file_field :images, multiple:true %>
+  </div>
+  <div>
+    <P>動画</P>
+     <%= f.file_field :videos, multiple:true %>
+  </div>
+  
+
+  <div>
+     <%=f.submit "登録", class: "new-salon-submit btn btn-primary" %>
+  </div>
+<% end %>

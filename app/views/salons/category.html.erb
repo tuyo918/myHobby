@@ -1,0 +1,27 @@
+<h1>Salons -- <%= @category.name %> </h1>
+
+<% @salons.each do |salon| %>
+    <div class="media">
+      <%= link_to salon_path(salon) do %>
+          <% if salon.icon.present? %>
+              <%= image_tag salon.icon, class: "salons-image mr-3", alt: "..." %>
+          <% else %>
+              <%= image_tag "/no-image.png", class: "salons-image mr-3", alt: "..." %>
+          <% end %>
+      <% end %>
+      
+      <div class="media-body">
+        <h5 class="mt-0"><%= salon.title %></h5>
+        <%= simple_format(salon.introduction) %>
+      </div>
+    </div>
+<% end %>
+
+<style>
+  .salons-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10%;
+  }
+</style>

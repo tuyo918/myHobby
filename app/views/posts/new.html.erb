@@ -1,0 +1,31 @@
+<h1>投稿する</h1>
+  <%= form_for [@salon,@post] do |f| %>
+     <%= f.hidden_field :salon_id, :value => @salon.id %>
+     <div>
+       <p>タイトル：</p>
+       <%= f.text_field :title, class: "form-control col-6" %>
+     </div>     
+     <div>
+       <p>内容：</p>
+       <%= f.text_area :content, class: "form-control col-6" %>
+     </div>
+    <div>
+       <p>画像：</p>
+       <%= f.file_field :images, multiple: true %>
+    </div>     
+    <div>
+       <p>動画：</p>
+       <%= f.file_field :videos, multiple: true %>
+    </div>      
+     <div>
+       <%= f.submit "投稿", class: "btn btn-primary" %>
+     </div>
+  <% end %>
+  
+<style>
+  .btn-primary { 
+      margin-top: 20px;
+  }   
+</style>
+
+

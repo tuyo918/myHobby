@@ -1,0 +1,8 @@
+<%= link_to "Add Article", root_path %>
+<h1>Articles index</h1>
+     <% @articles.each do |article| %>
+         <%= link_to article_path(article.id) do %>
+             <%= image_tag article.image %>
+         <% end %>
+     <% end %>
+     

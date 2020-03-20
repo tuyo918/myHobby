@@ -1,0 +1,6 @@
+<h2>Article new</h2>
+
+<%= form_for @article do |f| %>
+<p><%= f.file_field :image %></p>
+<%= f.submit 'upload' %>
+<% end %>

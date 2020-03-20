@@ -1,0 +1,74 @@
+<h1>My Salons</h1>
+
+<% @salons.each do |salon| %>
+  <div class="salon-index-flex">
+    <div class="media salon-media">
+      <div class="image">
+      <%= link_to salon_path(salon) do %>
+          <% if salon.icon.present? %>
+              <%= image_tag salon.icon, class: "salons-image mr-3", alt: "..." %>
+          <% else %>
+              <%= image_tag "/no-image.png", class: "salons-image mr-3", alt: "..." %>
+          <% end %>
+      <% end %>
+      </div>
+      <div class="media-body">
+        <h5 class="mt-0"><%= salon.title %></h5>
+        <%= simple_format(salon.introduction) %>
+      </div>
+    </div>
+    <div class="salon-action">
+      <div><%= link_to '編集',edit_salon_path(salon), method: :get, class: "btn btn-info salon-edit" %></div>
+      <div><%= link_to '削除',"salons/#{salon.id}", method: :delete, class: "btn btn-warning",data: {confirm: "#{salon.title}を削除しますか？"} %></div>
+    </div>
+  </div>
+<% end %>
+
+
+
+<style>
+
+.salon-index-flex {
+  display: flex;
+}
+
+.salon-media {
+  width: 80%;
+}
+
+.salon-action {
+  width: 20%;
+}
+
+.salon-edit {
+  margin-bottom: 20px;
+}
+
+.media-body {
+  padding: 20px 0 0 0 ;
+}
+
+  .salons-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10%;
+  }
+  
+  
+ @media screen and (max-width:480px) { 
+    
+    /*.image{*/
+    /*  diplay: block;*/
+      
+    /*}*/
+    
+    /*.salons-image {*/
+    /*  width: 400px;*/
+    /*  height: 400px;*/
+    /*  object-fit: cover;*/
+    /*  border-radius: 10%;*/
+    /*}*/
+    
+  }
+</style>

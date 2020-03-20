@@ -1,0 +1,55 @@
+// Place all the styles related to the salons controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+#salon-show {
+
+    .salon-images-area {
+      height: 200px;
+      width: 100%;
+      overflow: scroll;
+      white-space: nowrap; 
+    }
+
+    .post-index-item {
+      padding: 10px 0;
+    }
+
+    .post-index-image {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+    .add-post {
+        float: right;
+    }
+    
+    .heading {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    
+    .salons-show-image {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 20px;      
+    }
+    
+    
+    .salons-show-video {
+      width: 200px;
+      height: 200px;
+    }    
+    
+    .salons-show-icon {
+      width: 200px;
+      height: 200px;     
+    }    
+    
+    
+    .new-salon-submit {
+        margin: 20px 0;
+    }
+}

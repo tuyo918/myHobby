@@ -1,0 +1,15 @@
+<h1>投稿一覧</h1>
+<!--(<= @salon.title %>)-->
+
+<% @posts.each do |post| %>
+    <p><%= link_to Salon.find_by(id: post.salon_id).title, salon_path(post.salon_id) %><%= post.title %>..<%= post.content.slice(0..15) %></P>
+<% end %>
+
+
+<style>
+ .posts-show-image{
+   height: 200px;
+   width: 200px;
+ }
+</style>
+

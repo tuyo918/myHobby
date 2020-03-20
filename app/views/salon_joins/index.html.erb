@@ -1,0 +1,7 @@
+<H2>サロンのメンバーに申請中です </H2>
+
+<% if flash[:notice] %>
+  <p><%= flash[:notice] %></p>
+<% end %>
+
+<%= link_to "トップページに戻る", "/" , method: :get, class: "btn btn-info" %>
