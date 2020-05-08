@@ -1,9 +1,23 @@
-<h1>投稿一覧</h1>
-<!--(<= @salon.title %>)-->
+<h2><%= @salon.title %></h2>
+<h3><%= @post.title %></h3>
+<p><%= simple_format(@post.content) %></p>
 
-<% @posts.each do |post| %>
-    <p><%= link_to Salon.find_by(id: post.salon_id).title, salon_path(post.salon_id) %><%= post.title %>..<%= post.content.slice(0..15) %></P>
+<hr>
+<% if @post.images.present? %>
+  <div class="post-show-images-area">
+     <% @post.images.each do |image| %>
+        <%= image_tag image, class: "post-show-image" %>
+     <% end %>
+  </div>
 <% end %>
+<hr>
+<!--videoは一つだけupload-->
+<% if @post.video.present? %>
+  <div class="post-show-videos-area">
+        <%= video_tag @post.video, class: "post-show-video", :controls => true, :loop => true %>
+  </div>
+<% end %>
+
 
 
 <style>
@@ -11,5 +25,26 @@
    height: 200px;
    width: 200px;
  }
+ 
+ .post-show-images-area {
+     height: 200px;
+     width: 100%;
+     margin: 0 auto;
+     overflow-x: scroll;
+     white-space: nowrap;
+ }
+ 
+ .post-show-image {
+     width: 200px;
+     height: 200px;
+     border-radius: 10%;
+     margin: 0 5px;
+ }
+ 
+ .post-show-video {
+     /*width: 100%;*/
+ }
+ 
+ 
 </style>
 

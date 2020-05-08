@@ -1,0 +1,21 @@
+<h1>お問い合わせ</h1>
+
+<%= form_for @inquiry do |f| %>
+
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, :value => @inquiry.name , class: "form-control col-10"  %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.text_field :email, :value => @inquiry.email , class: "form-control col-10"  %>
+  </div>
+  
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_field :content, :value => @inquiry.content , class: "form-control col-10"  %>
+  </div>
+  
+  <%= f.submit "送信", class: "btn btn-primary" %>
+<% end %>

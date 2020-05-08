@@ -1,0 +1,11 @@
+<h3><%= @salon.title %>に参加しているユーザー</h3>
+<ul>
+    <% if @users.present? %>
+        <% @users.each do |user| %>
+            <li><%= link_to user.nickname, "/salons/#{@salon.id}/chats/#{user.id}" %></li>
+        <% end %>
+    <% else %>
+        <p>まだ参加している方はいません</p>
+    <% end %>
+</ul>
+

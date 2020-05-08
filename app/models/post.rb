@@ -1,12 +1,12 @@
 class Post < ApplicationRecord
-  validates :content, {presence: true, length: {maximum: 140}}
+  validates :content, presence: true
   belongs_to :salon
   
   mount_uploaders :images, ImageUploader
   serialize :images, JSON
   
-  mount_uploaders :videos, VideoUploader
-  serialize :videos, JSON
+  mount_uploader :video, VideoUploader
+ 
   
 end
 

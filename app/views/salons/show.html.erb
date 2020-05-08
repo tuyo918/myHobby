@@ -1,8 +1,13 @@
 <div id="salon-show">
-  <div>
-    <%= link_to "Add Post", new_salon_post_path(@salon) , class: "btn btn-info add-post" %>
+  <!--もしjoined_salons_indexを経由してsalon ahowにきた場合はAdd_postを表示しない。-->
+  <!--もしログイン状態がそのサロンオーナーなら表示-->
+   
+   <% if user_signed_in? && current_user.id.to_i == @salon.user_id.to_i %>
+      <%= link_to "Add Post", new_salon_post_path(@salon) , class: "btn btn-info add-post" %>
+   <% end %>
+   
     <h1>Salon</h1>
-    
+
     <h2><%= @salon.title %></h2>
     <div>
       <% if @salon.icon.present? %>
@@ -10,11 +15,12 @@
       <% end %>
       <div class="heading">Detail</div>
       <p><%= @salon.description %></p>
+      <div class="headind">Owner</div>
       <p><%= User.find_by(id: @salon.user_id).nickname %></p>
       <div class="heading">カテゴリー</div>
       <p><%= Category.find_by(id: @salon.category_id).name %></p>
-      <div class="heading">検索</div>
-      <p><%= @salon.search_word %></p>
+      <!--<div class="heading">検索</div>-->
+      <!--<p><%= @salon.search_word %></p>-->
       <div class="heading">料金</div>
       <p><%= @salon.fee %>円</p>
       <div class="heading">イメージ</div>
@@ -25,7 +31,8 @@
           <% end %>
         </div>
       <% end %>
-  
+      
+      <div class="heading">イメージ動画</div>
       <% if @salon.videos.present? %>
         <% @salon.videos.each do |video| %>
           <%= video_tag video, controls: true, controlsList: "nodownload", class: "salons-show-video" %>
@@ -34,12 +41,12 @@
       <h5>Salon 説明</h5>
       <p><%= @salon.introduction %></p>
     </div>
-  </div>
+
   <!--もしユーザーとオーナーのユーザーidが一致しなければ、サロン申請を送れる-->
-  <% if salon_join_status(@salon.id) == false %>
+  <% if user_signed_in? && salon_join_status(@salon.id) == false %>
     <% unless current_user.id == @salon.user_id %>
       <div class="registor_button">
-        <%= form_for @salon_join do |f| %>
+        <%= form_for [@salon,@salon_join] do |f| %>
           <%= f.hidden_field :salon_id, :value => @salon.id %>
           <%= f.hidden_field :user_id, :value => current_user.id %>
           <%= f.text_field :memo, class: "form-control col-6 salon-join-text", required: true, placeholder: "メッセージ必須" %>
@@ -48,17 +55,11 @@
       </div>
     <% end %>
   <% elsif salon_join_status(@salon.id) == "r" %>
-    <p>申込中....</p>
+    <p>申請中....</p>
   <% elsif salon_join_status(@salon.id) == "p" %>
     <p>参加済</p>
   <% end %>
   
-  <!--もしデータベースに参加申し込みのメッセージが既に入った場合、ステータスの表示わけ-->
-  <!--<=if Salon_joins.find_by() %>-->
-  <!--  参加申し込み済み!-->
-  <!--< else %>-->
-  <!--  参加ボタンを押してください-->
-  <!--< end %>  -->
  
   
   <hr>
@@ -67,9 +68,11 @@
       <%= submit_tag "Post search", class: "btn btn-success" %>
     <% end %> 
   
-  
+  <!--投稿削除ボタン-->
+  <!--<= link_to "削除", "/salon/#{@post.id}/destroy", {method: "delete"}, class: "btn btn-danger" %>-->
   
   <% @posts.each do |post| %>
+    <%= link_to salon_post_path(@salon, post) do %>
     <div class="post-index-item media">
       <% if post.images.present? %>
         <%= image_tag post.images[0], class: "mr-3 post-index-image", :alt => post.title %>
@@ -81,9 +84,47 @@
         <%= post.content.slice(0..100) %>
       </div>
     </div>
+    <% end %>
   <% end %>
+  
+<hr>
+<!-- Userしか表示しない　salonオーナーとuserのchat部分 -->
+<div class="chat">
+  <div id="chatArea">
+   <% @chats.each do |chat| %>
+     <% if chat.user_id == current_user.id %>
+      <div class="salon-chats-rignt">
+        <%= simple_format(chat.content) %>
+      </div>
+     <% else %>  
+      
+      <div class="salon-chats-left">
+        <% if User.find_by(id: chat.user_id).image.present? %>
+          <%= image_tag User.find_by(id: chat.user_id).image, class: "salon-chats-user-image" %>
+        <% else %>
+          <%= image_tag '/no-image.png', class: "salon-chats-user-image" %>
+        <% end %>
+        <%= User.find_by(id: chat.user_id).nickname %>
+        <%= simple_format(chat.content) %>
+      </div>
+     <% end %>
+   <% end %>
+ </div>
+  <div class="chat-new-message">
+    <%= form_for [@salon,@chat] do |f| %>
+      <%=f.hidden_field :salon_id, :value => @salon.id %>
+      <%=f.hidden_field :user_id, :value => current_user.id %>
+      <%=f.text_area :content, class: "col-sm-3" %>
+      <%=f.submit "送信", class: "btn btn-info"%>
+    <% end %>
+  </div>
 </div>
 
+<div class="footer">
+</div>
+<!-- chat 終了 -->
+</div>
+ 
 
 
 
@@ -96,5 +137,61 @@
   display: inline-block;
 }
 
-  
+.salon-menber {
+  float: right;
+}
+
+.salon-chats-user-image {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+
+.salon-chats-rignt {
+  text-align: right;
+}
+
+.chat {
+  width: 80%;
+  margin: 20px auto;
+}
+
+#chatArea {
+  width: 100%;
+  height: 300px;
+  padding: 10px;
+  background: #dcdcdc;
+  overflow-y: scroll;
+}
+
+.chat-new-message {
+  text-align: right;
+}
+
+.footer {
+  margin: 10px 0px;
+}
+
+
+.post-index-item:hover {
+  background: #f5f5f5;
+}
+
+.post-index-item {
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+
 </style>
+
+<script>
+function test(){
+ var elementHtml = document.documentElement;
+ var bottom = elementHtml.scrollHeight - elementHtml.clientHeight;
+ window.scroll(0, bottom);
+}
+</script>

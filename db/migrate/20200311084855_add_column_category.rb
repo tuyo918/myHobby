@@ -1,5 +1,5 @@
 class AddColumnCategory < ActiveRecord::Migration[5.0]
   def change
-    add_column :category, :image, :string
+    add_column :categories, :image, :string
   end
 end

@@ -1,0 +1,11 @@
+<h1>Joined Salons</h1>
+<h2>申請中</h2>
+<% @salon_joins.where(status: "r",).each do |requesting_salon| %>
+ <p><%= link_to Salon.find_by(id: requesting_salon.salon_id).title, salon_path(requesting_salon.salon_id) %></p>
+<% end %>
+<hr>
+<h2>承認済</h2>
+<% @salon_joins.where(status: "p").each do |requesting_salon| %>
+ <p><%= link_to Salon.find_by(id: requesting_salon.salon_id).title, salon_path(requesting_salon.salon_id) %></p>
+<% end %>
+

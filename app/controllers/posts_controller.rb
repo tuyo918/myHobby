@@ -5,20 +5,24 @@ class PostsController < ApplicationController
   def index
     if params[:salon_id] == "all"
       @posts = Post.all.order(created_at: :desc)
+      logger.debug("======================= post index count all = #{@posts.count}")
     else
       @posts = Post.where(salon_id: salon_posts).order(created_at: :desc)
+      logger.debug("======================= post index count = #{@posts.count}")
     end
     @salon = Salon.find_by(id: params[:salon_id])
   end
   
   def show
-    @posts = Post.find_by(id: params[:id])
-    post_search(params[:search])
+    @salon = Salon.find_by(id: params[:salon_id])
+    @post = Post.find_by(id: params[:id])
+    # post_search(params[:search])
   end
   
   def new
-    @post = Post.new
     @salon = Salon.find_by(id: params[:salon_id])
+    @post = @salon.posts.build
+    # @post = Post.new(salon_id: @salon.id)
   end
   
   def create
@@ -66,7 +70,7 @@ class PostsController < ApplicationController
   
   private 
     def post_params
-      params.require(:post).permit(:title, :content, :salon_id, {images: []}, {videos: []})
+      params.require(:post).permit(:title, :content, :salon_id, {images: []}, :video)
     end
     
   

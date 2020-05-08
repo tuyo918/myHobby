@@ -36,19 +36,30 @@ class SalonsController < ApplicationController
   
 
   def index
-    # ログインしている人の作成したsalonsを表示したいから
+    # ログインユーザがオーナーのサロン全件表示
+    
     @salons = Salon.where(user_id: current_user.id)
-    @posts=Post.where(id: params[:category_id]).order(created_at: :desc)
+    # @salon_joins = SalonJoin.where(salon_id: @salon.id)
   end
 
    #空のときとsearchにこめが入ったときで受け取り方が変わる
   def show
-    logger.debug("=================search text params #{params[:search]}")
     @salon = Salon.find_by(id: params[:id])
+    # 検索キーワード受け取り後の@posts
     post_search(params[:search])
-    logger.debug("===================== @salon.id = #{@salon.id} controller @salon.images.count = #{@salon.images.count}")
-    @salon_join = SalonJoin.new
+    @salon_join = SalonJoin.new(salon_id: @salon.id)
+    @chats = Chat.where(salon_id: @salon.id).order(created_at: :asc)  
+    @chat = Chat.new    
   end
+  
+  
+    # chatに関するアルゴリズム
+  # def chatshow
+  #   @salon = Salon.find_by(id: params[:salon_id])
+  #   @user = User.find_by(id: params[:user_id])
+  #   @chats = Chat.where(salon_id: @salon.id, user_id: [@salon.user_id, @user.id]).order(created_at: :asc)  
+  #   @chat = Chat.new
+  # end
   
   def category
     @category = Category.find_by(id: params[:id])
@@ -80,5 +91,4 @@ class SalonsController < ApplicationController
         @posts = @salon.posts.order(created_at: :desc)
       end
     end
-  
-end
+end 

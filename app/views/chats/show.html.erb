@@ -1,0 +1,13 @@
+<h3>Chat</h3>
+<% @chats.each do |chat| %>
+ <div>
+     <%= chat.content %>
+ </div>
+<% end %>
+<hr>
+<%= form_for [@salon, @chat] do |f| %>
+ <%= f.hidden_field :salon_id, :value => @salon.id %>
+ <%= f.hidden_field :user_id, :value => current_user.id %>
+ <%= f.text_area :content, class: "" %>
+ <%= f.submit "送信", class: "btn btn-info" %>
+<% end %>

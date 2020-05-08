@@ -1,7 +1,52 @@
-<H2>サロンのメンバーに申請中です </H2>
+<div id="salon-join-index">
+  <h2>申請中</h2>
+  <% @salon_joins.where(status: "r").each do |salon_join| %>
+    <%= form_for [@salon, salon_join], method: "patch" do |f| %>
+      <%= f.hidden_field :status, :value => "p" %>
+      <%= f.submit "承認する", class: "btn btn-info" %>
+    <% end %>
+    <%= form_for [@salon, salon_join], method: "patch" do |f| %>
+      <%= f.hidden_field :status, :value => "b" %>
+      <%= f.submit "ブロック", class: "btn btn-danger" %>
+    <% end %>    
+    <%= link_to User.find_by(id: salon_join.user_id).nickname.truncate(10), user_path(salon_join.user_id) %>
+    <br><br>
+  <% end %>
+  <hr>
+  <h2>承認済</h2>
+  <% @salon_joins.where(status: "p").each do |salon_join| %>
+    <%= form_for [@salon, salon_join], method: "patch" do |f| %>
+      <%= f.hidden_field :status, :value => "r" %>
+      <%= f.submit "申請中へ戻す", class: "btn btn-info" %>
+    <% end %>
+    <%= form_for [@salon, salon_join], method: "patch" do |f| %>
+      <%= f.hidden_field :status, :value => "b" %>
+      <%= f.submit "ブロック", class: "btn btn-danger" %>
+    <% end %> 
+    <%= link_to User.find_by(id: salon_join.user_id).nickname.truncate(10), user_path(salon_join.user_id) %>
+    <br><br>
+  <% end %>
+  <hr>
+  <h2>ブロック中</h2>
+  <% @salon_joins.where(status: "b").each do |salon_join| %>
+    <%= form_for [@salon, salon_join], method: "patch" do |f| %>
+      <%= f.hidden_field :status, :value => "r" %>
+      <%= f.submit "申請中へ", class: "btn btn-info" %>
+    <% end %>
+    <%= link_to User.find_by(id: salon_join.user_id).nickname.truncate(10), user_path(salon_join.user_id) %>
+    <br><br>
+  <% end %>
+</div>
 
-<% if flash[:notice] %>
-  <p><%= flash[:notice] %></p>
-<% end %>
+<style>
+    input .btn {
+        display: inline-block;
+    }
+    
+    form {
+      display: inline-block;
+    }
+    
+</style>
 
-<%= link_to "トップページに戻る", "/" , method: :get, class: "btn btn-info" %>
+

@@ -9,6 +9,7 @@
       width: 100%;
       overflow: scroll;
       white-space: nowrap; 
+      margin: 0 0 20px 0;
     }
 
     .post-index-item {
@@ -44,12 +45,46 @@
     }    
     
     .salons-show-icon {
-      width: 200px;
+      width: 250px;
       height: 200px;     
     }    
     
     
     .new-salon-submit {
         margin: 20px 0;
+    }
+    
+    
+}
+
+// salon-form 
+
+#salon-form {
+  
+   form p {
+      margin: 20px 0 0 0;
+    }
+  
+    form input, textarea {
+      margin: 0 auto;
+    }
+    
+    .new-salon-submit{
+      margin: 20px 0px;
+    }
+    
+    .content {
+      border-radius: 20px;
+      padding: 20px 0px;
+      background-color: #e6e6fa;
+      height: 700px;
+      width: 80%;
+      margin:0 auto;
+      text-align: center;
+    }
+  
+    
+    .footer {
+      margin: 100px 0px;
     }
 }

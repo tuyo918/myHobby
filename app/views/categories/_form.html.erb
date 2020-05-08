@@ -1,0 +1,25 @@
+<div id="category-form">
+ <%= form_for @category do |f| %>
+  <div class="field">
+    <%= f.label :name %><br />
+    <%= f.text_field :name, :value => @category.name , class: "form-control col-10"  %>
+  </div>
+  <div class="field">
+    <%= f.label :detail %><br />
+    <%= f.text_area :detail, :value => @category.detail, class: "form-control col-10", size: "20x5" %>
+  </div>
+  <div class="field">
+    <%= f.label "画像" %><br />
+    <%= f.file_field :image %>
+  </div>
+  <div class="field">
+      <%= f.submit "登録", class: "btn btn-primary" %>
+  </div>
+ <% end %>
+</div>
+
+<style>
+    #category-form .field {
+        margin: 20px 0 0 0;
+    }
+</style>

@@ -1,5 +1,5 @@
 <h1>投稿する</h1>
-  <%= form_for [@salon,@post] do |f| %>
+  <%= form_for [@salon, @post] do |f| %>
      <%= f.hidden_field :salon_id, :value => @salon.id %>
      <div>
        <p>タイトル：</p>
@@ -11,11 +11,11 @@
      </div>
     <div>
        <p>画像：</p>
-       <%= f.file_field :images, multiple: true %>
+       <%= f.file_field :images, multiple: true, accept: "image/*" %>
     </div>     
     <div>
        <p>動画：</p>
-       <%= f.file_field :videos, multiple: true %>
+       <%= f.file_field :video, accept: "video/*" %>
     </div>      
      <div>
        <%= f.submit "投稿", class: "btn btn-primary" %>

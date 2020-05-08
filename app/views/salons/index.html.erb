@@ -18,10 +18,12 @@
       </div>
     </div>
     <div class="salon-action">
+      <div><%= link_to "#{SalonJoin.where(salon_id: salon.id, status: "r").count}", salon_salon_joins_path(salon.id), class: "btn btn-info joins-count"  %></div>
       <div><%= link_to '編集',edit_salon_path(salon), method: :get, class: "btn btn-info salon-edit" %></div>
       <div><%= link_to '削除',"salons/#{salon.id}", method: :delete, class: "btn btn-warning",data: {confirm: "#{salon.title}を削除しますか？"} %></div>
     </div>
   </div>
+<hr>
 <% end %>
 
 
@@ -38,10 +40,15 @@
 
 .salon-action {
   width: 20%;
+  margin-top: 20px;
 }
 
 .salon-edit {
-  margin-bottom: 20px;
+  margin-bottom: 5px;
+}
+
+.joins-count{
+  margin-bottom: 5px;
 }
 
 .media-body {

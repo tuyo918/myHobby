@@ -1,0 +1,18 @@
+<h2>お問合せ内容</h2>
+<div>名前：<%= @inquiry.name %></div>
+<div>メール：<%= @inquiry.email %></div>
+<div>内容：<%= simple_format(@inquiry.content) %></div>
+<hr>
+<h3>回答記載フォーム</h3>
+
+<%= form_for [@inquiry, @answer] do |f| %>
+  <div class="field">
+    <%= f.label :content %><br />
+    <%= f.text_area :content, :value => @answer.content , class: "form-control", size: "20x10"  %>
+  </div>
+  <br>
+   <div class="field">
+      <%= f.submit "送信", class: "btn btn-primary" %>
+  </div>
+<% end %>
+

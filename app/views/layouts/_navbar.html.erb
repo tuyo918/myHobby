@@ -9,9 +9,7 @@
       <li class="nav-item active">
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
-      <li class="nav-item">
-         <a class="nav-link" href="#">Link</a>
-      </li>
+     
        
       <% if user_signed_in? %>
       
@@ -20,14 +18,17 @@
               Salon
             </a>
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                  <%= link_to "My salons", salons_path, class: "dropdown-item" %>
-                  <%= link_to "Joined salons #{request_salons_count}", "#", class: "dropdown-item" %>
+                <div class= "requested-count">
+                  <%= link_to salons_path, class: "dropdown-item" do %>
+                  <span>My salons <i class="fas fa-bell"></i><%= mysalon_requested_count[:request] %></span>
+                  <% end %>
+                </div>
+                <%= link_to joined_salons_path, class: "dropdown-item" do %>
+                  <span>Joined salons <i class="far fa-bell"></i><%= request_salons_count %></span>
+                <% end %>
             </div>
           </li>     
-              
-          <li class="nav-item">
-               <%= link_to "Posts", salon_posts_path("all"), class: "nav-link" %>
-          </li>          
+            
       <% end %>  
       
       
@@ -50,14 +51,35 @@
         </div>
       </li>
       
+      <% if user_signed_in? && current_user.id == 0 %>
+         <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            管理者メニュー
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <%= link_to "カテゴリー登録", new_category_path, class: "dropdown-item" %>
+                <%= link_to "カテゴリー一覧", categories_path, class: "dropdown-item" %>
+                <%= link_to "お問い合わせ一覧", inquiries_path, class: "dropdown-item" %>
+          </div>
+        </li> 
+      <% end %>
+       
 
-
+      <li>
+        <% unless user_signed_in? && current_user.id == 0 %>
+          <%= link_to "お問い合わせ", new_inquiry_path, class: "nav-link" %>
+        <% end %>
+      <li>
 
 
     </ul>
-    <!--<form class="form-inline my-2 my-lg-0">-->
-    <!--  <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">-->
-    <!--  <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>-->
-    <!--</form>-->
   </div>
 </nav>
+
+<style>
+  .requested-count {
+    width:20px;
+    height :20px;
+    border-radius: 50%;
+  }
+</style>
